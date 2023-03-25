@@ -1,6 +1,3 @@
-_G.Enabled = true -- change to false then execute again to turn off
-_G.Speed = 100 -- change speed to the number you want
-
 local players = game:GetService("Players")
 
 local function bypassWalkSpeed()
