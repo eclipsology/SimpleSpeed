@@ -29,6 +29,7 @@ local players = game:GetService("Players")
 
 players.PlayerAdded:Connect(function(player)
 	player.CharacterAdded:Connect(function(character) --every time he spawns
+		print("Respawned")
 		while _G.Enabled and wait() do
 			players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed
 		end
