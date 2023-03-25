@@ -1,37 +1,38 @@
 _G.Enabled = true -- change to false then execute again to turn off
 _G.Speed = 100 -- change speed to the number you want
 
+local players = game:GetService("Players")
 
-if getgenv().executed then
-    print("WS Already Bypassed")
-    return
+local function bypassWalkSpeed()
+    if getgenv().executed then
+        print("WS Already Bypassed")
+        if not _G.Enabled then
+            return
+        end
+    else
+        getgenv().executed = true
+        print("WS Bypassed")
+
+        local mt = getrawmetatable(game)
+        setreadonly(mt, false)
+
+        local oldindex = mt.__index
+        mt.__index = newcclosure(function(self, b)
+            if b == 'WalkSpeed' then
+                return 16
+            end
+            return oldindex(self, b)
+        end)
+    end
 end
 
-getgenv().executed = true
+bypassWalkSpeed()
 
-print("WS Bypassed")
-
-local mt = getrawmetatable(game)
-setreadonly(mt, false)
-
-local oldindex = mt.__index
-mt.__index = newcclosure(function(self, b)
-    if b == 'WalkSpeed' then
-        return 16
-    end
-    return oldindex(self, b)
+players.LocalPlayer.CharacterAdded:Connect(function(char)
+    bypassWalkSpeed()
+    char:WaitForChild("Humanoid").WalkSpeed = _G.Speed
 end)
 
 while _G.Enabled and wait() do
-    players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed
+    players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = _G.Speed
 end
-local players = game:GetService("Players")
-
-players.PlayerAdded:Connect(function(player)
-	player.CharacterAdded:Connect(function(character) --every time he spawns
-		print("Respawned")
-		while _G.Enabled and wait() do
-			players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed
-		end
-	end)
-end)
