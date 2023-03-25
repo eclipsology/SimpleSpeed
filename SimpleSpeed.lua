@@ -23,5 +23,14 @@ mt.__index = newcclosure(function(self, b)
 end)
 
 while _G.Enabled and wait() do
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed
+    players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed
 end
+local players = game:GetService("Players")
+
+players.PlayerAdded:Connect(function(player)
+	player.CharacterAdded:Connect(function(character) --every time he spawns
+		while _G.Enabled and wait() do
+			players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed
+		end
+	end)
+end)
